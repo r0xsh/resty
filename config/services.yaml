@@ -26,5 +26,18 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
+    App\Scrappers\:
+        resource: '../src/Scrappers'
+        exclude: '../src/Scrappers/{Core,Scrapper.php}'
+        tags: ['scrappers']
+
+    GuzzleHttp\Client:
+        factory: 'App\Factories\GuzzleClientFactory:build'
+
+    App\Scrappers\Scrapper:
+        factory: 'App\Factories\ScrappersFactory:build'
+        arguments:
+            $scrappers: '%scrappers.names%'
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
