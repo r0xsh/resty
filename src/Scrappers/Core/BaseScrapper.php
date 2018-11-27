@@ -11,7 +11,7 @@ namespace App\Scrappers\Core;
 
 use Symfony\Component\DomCrawler\Crawler;
 
-class BaseScrapper
+abstract class BaseScrapper
 {
 
     /** @var Crawler */
@@ -19,6 +19,12 @@ class BaseScrapper
 
     public function setBody(String $html) {
         $this->body = new Crawler($html);
+    }
+
+    abstract function urlHandler(): string ;
+
+    public function generateUrl(string $handle): string {
+        return sprintf($this->urlHandler(), $handle);
     }
 
     public function __get($name)

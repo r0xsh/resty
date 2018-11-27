@@ -10,13 +10,14 @@ namespace App\Factories;
 
 use App\Scrappers\Scrapper;
 use GuzzleHttp\Client;
+use Psr\Container\ContainerInterface;
 
 class ScrappersFactory
 {
 
-    public function build(Client $client, $scrappers)
+    public function build(Client $client, $scrappers, ContainerInterface $container)
     {
-        return new Scrapper($client, $scrappers);
+        return new Scrapper($client, $scrappers, $container);
     }
 
 }

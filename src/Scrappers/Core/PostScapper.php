@@ -13,15 +13,6 @@ use Symfony\Component\DomCrawler\Crawler;
 
 abstract class PostScapper extends BaseScrapper
 {
-
-
-    /**
-     * Give a name in lowercase
-     * Used for internal routing
-     * @return String
-     */
-    abstract function entityName(): String;
-
     /**
      * Return CSS selector of title
      * @param Crawler $crawler

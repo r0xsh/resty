@@ -24,9 +24,11 @@ class ScrappersPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
 
-        $scrappers = array_map(function ($scrapper) use (&$container){
-            return strtolower((new ReflectionClass($container->get($scrapper)))->getShortName());
-        }, array_keys($container->findTaggedServiceIds('scrappers')));
+        $scrappers = array_reduce(array_keys($container->findTaggedServiceIds('scrappers')),
+            function ($acc, $scrapper) use (&$container){
+            $acc[strtolower((new ReflectionClass($container->get($scrapper)))->getShortName())] = $scrapper;
+            return $acc;
+        }, []);
 
         $container->setParameter('scrappers.names', $scrappers);
 

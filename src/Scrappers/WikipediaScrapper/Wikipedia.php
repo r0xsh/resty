@@ -15,14 +15,9 @@ use Symfony\Component\DomCrawler\Crawler;
 final class Wikipedia extends PostScapper
 {
 
-    /**
-     * Give a name in lowercase
-     * Used for internal routing
-     * @return String
-     */
-    function entityName(): String
+    function urlHandler(): string
     {
-        return 'coucou';
+        return 'https://fr.wikipedia.com/wiki/%s';
     }
 
     /**
@@ -32,7 +27,7 @@ final class Wikipedia extends PostScapper
      */
     function titleSelector(Crawler $crawler): ?String
     {
-        return $crawler->filterXPath('//*[@id="firstHeading"]')->html();
+        return $crawler->filterXPath('//*[@id="firstHeading"]')->text();
     }
 
     /**
@@ -62,10 +57,7 @@ final class Wikipedia extends PostScapper
      */
     function contentSelector(Crawler $crawler): ?String
     {
-        return array_reduce($crawler->filter('#bodyContent > p')->getIterator(), function ($acc, $line){
-            $acc .= $line.'\n';
-            return $acc;
-        }, '');
+        return $crawler->filter('#bodyContent')->text();
     }
 
     /**
@@ -75,6 +67,7 @@ final class Wikipedia extends PostScapper
      */
     function mainImageSelector(Crawler $crawler): ?String
     {
-        return $crawler->filter('#bodyContent > img')->first()->attr('src');
+        return $crawler->filter('.mw-parser-output img')->first()->attr('src');
     }
+
 }

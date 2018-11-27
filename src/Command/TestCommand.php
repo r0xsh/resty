@@ -41,8 +41,6 @@ class TestCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);
-
-
         $io->text($this->scrapper->isValidScrapper($io->ask("scrapp")));
 
     }

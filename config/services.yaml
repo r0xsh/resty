@@ -27,6 +27,7 @@ services:
         tags: ['controller.service_arguments']
 
     App\Scrappers\:
+        public: true
         resource: '../src/Scrappers'
         exclude: '../src/Scrappers/{Core,Scrapper.php}'
         tags: ['scrappers']
