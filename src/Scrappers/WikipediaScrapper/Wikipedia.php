@@ -9,10 +9,10 @@
 namespace App\Scrappers\WikipediaScrapper;
 
 
-use App\Scrappers\Core\PostScapper;
+use App\Scrappers\Core\PostScrapper;
 use Symfony\Component\DomCrawler\Crawler;
 
-final class Wikipedia extends PostScapper
+final class Wikipedia extends PostScrapper
 {
 
     function urlHandler(): string
@@ -27,7 +27,7 @@ final class Wikipedia extends PostScapper
      */
     function titleSelector(Crawler $crawler): ?String
     {
-        return $crawler->filterXPath('//*[@id="firstHeading"]')->text();
+        return optional($crawler->filterXPath('//*[@id="firstHeading"]'))->text();
     }
 
     /**
@@ -57,7 +57,7 @@ final class Wikipedia extends PostScapper
      */
     function contentSelector(Crawler $crawler): ?String
     {
-        return $crawler->filter('#bodyContent')->text();
+        return null;
     }
 
     /**
@@ -67,7 +67,6 @@ final class Wikipedia extends PostScapper
      */
     function mainImageSelector(Crawler $crawler): ?String
     {
-        return $crawler->filter('.mw-parser-output img')->first()->attr('src');
+        return optional($crawler->filterXPath('//meta[@property="og:image"]'))->attr('content');
     }
-
 }

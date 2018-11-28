@@ -10,6 +10,7 @@ namespace App\Scrappers;
 
 
 use App\Scrappers\Core\BaseScrapper;
+use App\Scrappers\Core\Exceptions\ScrapperException;
 use GuzzleHttp\Client;
 use Psr\Container\ContainerInterface;
 
@@ -49,26 +50,28 @@ class Scrapper
         return $this->scrappers;
     }
 
-    public function scrap(string $scrapper, string $handle) {
+    /**
+     * @param string $scrapper
+     * @param string $handle
+     * @return BaseScrapper
+     * @throws ScrapperException
+     */
+    public function scrap(string $scrapper, string $handle): BaseScrapper {
 
         if ($this->isValidScrapper($scrapper) && $this->container->has($this->scrappers[$scrapper])) {
             /** @var BaseScrapper $scrapperObj */
             $scrapperObj = $this->container->get($this->scrappers[$scrapper]);
 
             $scrapperObj->setBody(
-                $this->http->get($scrapperObj->generateUrl($handle))->getBody()->getContents()
+                $this->http->get(
+                    $scrapperObj->generateUrl($handle)
+                )->getBody()->getContents()
             );
 
-            return [
-                'title' => $scrapperObj->title,
-                'content' => $scrapperObj->content,
-                'image' => $scrapperObj->mainImage
-                ];
-
-
+            return $scrapperObj;
 
         } else {
-            return ['error' => true];
+            throw new ScrapperException(sprintf('The scrapper named "%s" does not exists', $scrapper));
         }
     }
 }

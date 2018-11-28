@@ -25,7 +25,7 @@ class ScrapperController extends AbstractController
     public function index()
     {
         return $this->json(
-            array_reduce($this->scraper->getScrappers(), function ($acc, $scrapper) {
+            array_reduce(array_keys($this->scraper->getScrappers()), function ($acc, $scrapper) {
                 $acc[$scrapper] = '/scrapper/'.$scrapper.'/{handle}';
                 return $acc;
             }, [])
@@ -37,6 +37,7 @@ class ScrapperController extends AbstractController
      * @param string $scrapper
      * @param string $handle
      * @return JsonResponse
+     * @throws \App\Scrappers\Core\Exceptions\ScrapperException
      */
     public function doScrap(string $scrapper, string $handle) {
 

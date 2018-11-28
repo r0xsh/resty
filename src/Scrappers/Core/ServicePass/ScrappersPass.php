@@ -6,14 +6,12 @@
  * Time: 15:32
  */
 
-namespace App\DependencyInjection\Compiler;
+namespace App\Scrappers\Core\ServicePass;
 
 
-use Psr\Container\ContainerInterface;
 use ReflectionClass;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
 
 class ScrappersPass implements CompilerPassInterface
 {

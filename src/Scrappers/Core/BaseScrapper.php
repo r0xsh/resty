@@ -9,9 +9,10 @@
 namespace App\Scrappers\Core;
 
 
+use App\Scrappers\Core\Exceptions\ScrapperException;
 use Symfony\Component\DomCrawler\Crawler;
 
-abstract class BaseScrapper
+abstract class BaseScrapper implements \JsonSerializable
 {
 
     /** @var Crawler */
@@ -21,16 +22,32 @@ abstract class BaseScrapper
         $this->body = new Crawler($html);
     }
 
-    abstract function urlHandler(): string ;
+    /**
+     * Return the url, and use '%s' where the handle need to be placed
+     * @return string
+     */
+    abstract function urlHandler(): string;
 
     public function generateUrl(string $handle): string {
         return sprintf($this->urlHandler(), $handle);
     }
 
-    public function __get($name)
+    /**
+     * @param $name
+     * @return string|null
+     * @throws ScrapperException
+     */
+    public function __get($name): ?string
     {
         if (method_exists($this, $name.'Selector')) {
-            return $this->{$name.'Selector'}($this->body);
+            try {
+                return trim($this->{$name . 'Selector'}($this->body));
+            } catch (\Exception $e) {
+                throw new ScrapperException(
+                    sprintf('An error occurred while parsing "%s" argument', $name),
+                    0, $e
+                );
+            }
         }
 
         return null;

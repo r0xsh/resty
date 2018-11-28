@@ -41,6 +41,9 @@
     "guzzlehttp/psr7": {
         "version": "1.4.2"
     },
+    "kevinrob/guzzle-cache-middleware": {
+        "version": "v3.2.1"
+    },
     "nikic/php-parser": {
         "version": "v4.1.0"
     },

@@ -11,7 +11,14 @@ namespace App\Scrappers\Core;
 
 use Symfony\Component\DomCrawler\Crawler;
 
-abstract class PostScapper extends BaseScrapper
+/**
+ * @property string|null title
+ * @property string|null date
+ * @property string|null author
+ * @property string|null content
+ * @property string|null mainImage
+ */
+abstract class PostScrapper extends BaseScrapper
 {
     /**
      * Return CSS selector of title
@@ -51,5 +58,23 @@ abstract class PostScapper extends BaseScrapper
      * @return String
      */
     abstract function mainImageSelector(Crawler $crawler): ?String;
+
+    /**
+     * Specify data which should be serialized to JSON
+     * @link https://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'title' => $this->title,
+            'date' => $this->date,
+            'image' => $this->mainImage,
+            'author' => $this->author,
+            'content' => $this->content
+        ];
+    }
 
 }
