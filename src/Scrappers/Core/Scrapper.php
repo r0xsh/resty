@@ -6,10 +6,9 @@
  * Time: 14:56
  */
 
-namespace App\Scrappers;
+namespace App\Scrappers\Core;
 
 
-use App\Scrappers\Core\BaseScrapper;
 use App\Scrappers\Core\Exceptions\ScrapperException;
 use GuzzleHttp\Client;
 use Psr\Container\ContainerInterface;
@@ -35,8 +34,9 @@ class Scrapper
     }
 
     /**
-     * Check if the scrappers excists
-     * @return array|null
+     * Check if the scrappers exists
+     * @param String $name
+     * @return bool
      */
     public function isValidScrapper(String $name): bool {
         return array_key_exists($name, $this->scrappers);
@@ -71,7 +71,7 @@ class Scrapper
             return $scrapperObj;
 
         } else {
-            throw new ScrapperException(sprintf('The scrapper named "%s" does not exists', $scrapper));
+            throw new ScrapperException(sprintf('The scrapper named "%s" does not exists', $scrapper), 404);
         }
     }
 }

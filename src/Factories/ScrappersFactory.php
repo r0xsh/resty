@@ -8,7 +8,7 @@
 
 namespace App\Factories;
 
-use App\Scrappers\Scrapper;
+use App\Scrappers\Core\Scrapper;
 use GuzzleHttp\Client;
 use Psr\Container\ContainerInterface;
 

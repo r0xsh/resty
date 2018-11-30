@@ -41,7 +41,9 @@ abstract class BaseScrapper implements \JsonSerializable
     {
         if (method_exists($this, $name.'Selector')) {
             try {
-                return trim($this->{$name . 'Selector'}($this->body));
+                return trim(
+                    $this->{$name . 'Selector'}($this->body)
+                );
             } catch (\Exception $e) {
                 throw new ScrapperException(
                     sprintf('An error occurred while parsing "%s" argument', $name),
@@ -49,7 +51,6 @@ abstract class BaseScrapper implements \JsonSerializable
                 );
             }
         }
-
         return null;
     }
 

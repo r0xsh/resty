@@ -58,4 +58,19 @@ class Github extends ProfileScrapper
     {
         return optional($crawler->filterXPath('//meta[starts-with(@property, "profile:username")]'))->attr('content');
     }
+
+    function contributionsSelector(Crawler $crawler): ?int
+    {
+        return intval(optional(
+            $crawler->filterXPath('//h2[contains(text(), "contributions")]')
+        )->text());
+    }
+
+    public function jsonSerialize()
+    {
+        return array_merge(parent::jsonSerialize(), [
+            'contributions' => $this->contributions
+        ]);
+    }
+
 }

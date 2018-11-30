@@ -8,20 +8,17 @@
 
 use App\Support\Optional;
 if (!function_exists('optional')) {
-    /**
-     * Allow arrow-syntax access of optional objects by using a higher-order
-     * proxy object. The eliminates some need of ternary and null coalesce
-     * operators in Blade templates.
-     *
-     * @param mixed|null $value
-     *
-     * @return Optional
-     */
     function optional($value)
     {
         if ($value instanceof \Symfony\Component\DomCrawler\Crawler && $value->count() == 0) {
             $value = null;
         }
         return new Optional($value);
+    }
+}
+if (!function_exists('dd')) {
+    function dd($value)
+    {
+            return die(sprintf('<html><head><title>DEBUG !</title></head><body><pre>%s</pre></body></html>', print_r($value, true)));
     }
 }
